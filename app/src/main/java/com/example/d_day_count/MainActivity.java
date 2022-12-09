@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
     String startDate;
     String endDate;
 
-    Calendar calendar_start;
-    Calendar calendar_end;
+    Calendar calendar_start, calendar_end, calendar_birth;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,41 +42,50 @@ public class MainActivity extends AppCompatActivity {
         calendar_end = Calendar.getInstance();
 
         binding.startBtn.setOnClickListener(v -> {
-            Log.i("ButtonChecker", "ButtonCheck True");
-            datePickerDialog(true);
+            Log.i("ButtonChecker", "ButtonCheck StartBtn");
+            datePickerDialog(1);
         });
         binding.endBtn.setOnClickListener(v -> {
-            Log.i("ButtonChecker", "ButtonCheck False");
-            datePickerDialog(false);
+            Log.i("ButtonChecker", "ButtonCheck EndBtn");
+            datePickerDialog(2);
+        });
+        binding.birthBtn.setOnClickListener(v -> {
+            Log.i("ButtonChecker", "ButtonCheck BirthBtn");
+            datePickerDialog(3);
         });
     }
     /*
     * btnChecker = 시작일과 마지막일을 구분하는 변수
     * year, month, day = 선택한 날짜의 값
     * startDate, endDate = 로깅 변수
+    *
+    * 마지막 else문을 해결해야함.
     * */
-    public void datePickerDialog(boolean btnChecker) {
+    public void datePickerDialog(int btnChecker) {
         GregorianCalendar today = new GregorianCalendar();
         int year = today.get(Calendar.YEAR);
         int month = today.get(Calendar.MONTH);
         int day = today.get(Calendar.DATE);
 
         DatePickerDialog dlg = new DatePickerDialog(this, (view, year_num, month_num, dayOfMonth) -> {
-            if (btnChecker == true) {
+            if (btnChecker == 1) {
                 startDate = year_num + "년 " + (month_num + 1) + "월 " + dayOfMonth + "일";
                 Log.i("Date","startDate - " + startDate);
                 calendar_start.set(year_num, month_num + 1, dayOfMonth);
                 Toast.makeText(getApplicationContext(), "시작일은 " + startDate + " 입니다.", Toast.LENGTH_LONG).show();
-            }else{
+            } else if (btnChecker == 2) {
                 endDate = year_num + "년 " + (month_num + 1) + "월 " + dayOfMonth + "일";
                 Log.i("Date","startDate - " + startDate);
                 Log.i("Date","startDate - " + endDate);
-                calendar_end.set(year, month + 1, dayOfMonth);
+                calendar_end.set(year_num, month_num + 1, dayOfMonth);
                 long finalDate = TimeUnit.MILLISECONDS.toDays(
                         calendar_end.getTimeInMillis() - calendar_start.getTimeInMillis()
                 );
                 binding.finalDate.setText(String.valueOf(finalDate));
                 Toast.makeText(getApplicationContext(), "종료일은 " + endDate + " 입니다.", Toast.LENGTH_LONG).show();
+            } else {
+                calendar_birth.set(year_num, month_num + 1, dayOfMonth);
+
             }
         },year,month,day);
         dlg.show();
