@@ -11,6 +11,7 @@ import com.example.d_day_count.databinding.Main;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 구현 기능 목록
@@ -21,8 +22,8 @@ import java.util.GregorianCalendar;
 public class MainActivity extends AppCompatActivity {
 
     Main binding;
-    int year, month, day;
     String startDate = "";
+    String endDate = "";
     Calendar calendar_start;
     Calendar calendar_end;
 
@@ -34,26 +35,41 @@ public class MainActivity extends AppCompatActivity {
         calendar_start = Calendar.getInstance();
         calendar_end = Calendar.getInstance();
 
-        binding.startBtn.setOnClickListener(v -> CalendarStart());
-        binding.endBtn.setOnClickListener(v -> CalendarEnd());
+        binding.startBtn.setOnClickListener(v -> {
+            GregorianCalendar today = new GregorianCalendar();
+            int year = today.get(Calendar.YEAR);
+            int month = today.get(Calendar.MONTH);
+            int day = today.get(Calendar.DATE);
+
+            DatePickerDialog dlg = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    startDate = String.valueOf(year + (month + 1) + dayOfMonth);
+                    calendar_start.set(year, month + 1, dayOfMonth);
+                }
+            }, year, month, day);
+            dlg.show();
+        });
+        binding.endBtn.setOnClickListener(v -> {
+            GregorianCalendar today = new GregorianCalendar();
+            int year = today.get(Calendar.YEAR);
+            int month = today.get(Calendar.MONTH);
+            int day = today.get(Calendar.DATE);
+
+            DatePickerDialog dlg = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    endDate = String.valueOf(year + (month + 1) + dayOfMonth);
+                    calendar_end.set(year, month + 1, dayOfMonth);
+
+                    long finalDate = TimeUnit.MILLISECONDS.toDays(
+                            calendar_end.getTimeInMillis() - calendar_start.getTimeInMillis()
+                    );
+                    binding.finalDate.setText(String.valueOf(finalDate));
+                }
+            }, year, month, day);
+            dlg.show();
+        });
     }
 
-    public void CalendarStart() {
-        GregorianCalendar today = new GregorianCalendar();
-        year = today.get(Calendar.YEAR);
-        month = today.get(Calendar.MONTH);
-        day = today.get(Calendar.DATE);
-    }
-
-    public void CalendarEnd() {
-        GregorianCalendar today = new GregorianCalendar();
-        year = today.get(Calendar.YEAR);
-        month = today.get(Calendar.MONTH);
-        day = today.get(Calendar.DATE);
-
-        DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
-            startDate = String.valueOf(year + (month + 1) + dayOfMonth);
-            calendar_start.set(year, month + 1, dayOfMonth);
-        };
-    }
 }
