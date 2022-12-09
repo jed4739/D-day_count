@@ -23,23 +23,37 @@ public class MainActivity extends AppCompatActivity {
     Main binding;
     int year, month, day;
     String startDate = "";
+    Calendar calendar_start;
+    Calendar calendar_end;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        binding.startBtn.setOnClickListener(v -> dateDialog());
+        calendar_start = Calendar.getInstance();
+        calendar_end = Calendar.getInstance();
+
+        binding.startBtn.setOnClickListener(v -> CalendarStart());
+        binding.endBtn.setOnClickListener(v -> CalendarEnd());
     }
 
-    public void dateDialog() {
+    public void CalendarStart() {
         GregorianCalendar today = new GregorianCalendar();
         year = today.get(Calendar.YEAR);
         month = today.get(Calendar.MONTH);
         day = today.get(Calendar.DATE);
+    }
+
+    public void CalendarEnd() {
+        GregorianCalendar today = new GregorianCalendar();
+        year = today.get(Calendar.YEAR);
+        month = today.get(Calendar.MONTH);
+        day = today.get(Calendar.DATE);
+
         DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
+            startDate = String.valueOf(year + (month + 1) + dayOfMonth);
+            calendar_start.set(year, month + 1, dayOfMonth);
         };
-
-
     }
 }

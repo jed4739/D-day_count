@@ -1,5 +1,4 @@
-package com.bokchi.dday
-//
+package com.example.d_day_count
 //import android.app.DatePickerDialog
 //import androidx.appcompat.app.AppCompatActivity
 //import android.os.Bundle
@@ -38,7 +37,7 @@ package com.bokchi.dday
 //                    // 2021520
 //                    // 5
 //                    // 20
-////                    startDate = "${year} + ${month} + ${dayOfMonth}"
+//                    startDate = "${year} + ${month} + ${dayOfMonth}"
 //                    startDate = year.toString() + (month+1).toString() + dayOfMonth.toString()
 //
 //                    calendar_start.set(year, month+1, dayOfMonth)
@@ -66,7 +65,7 @@ package com.bokchi.dday
 //                    // 2021520
 //                    // 5
 //                    // 20
-////                    startDate = "${year} + ${month} + ${dayOfMonth}"
+//                    startDate = "${year} + ${month} + ${dayOfMonth}"
 //                    endDate = year.toString() + (month+1).toString() + dayOfMonth.toString()
 //                    Log.d("day : ", endDate)
 //
