@@ -28,10 +28,7 @@ public class MainActivity extends AppCompatActivity {
     String startDate;
     String endDate;
 
-    Calendar calendar_start, calendar_end, calendar_birth;
-
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    Calendar calendar_start, calendar_end, birth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
         calendar_start = Calendar.getInstance();
         calendar_end = Calendar.getInstance();
+        birth = Calendar.getInstance();
+
+        birth.set(2004,5, 5);
+        binding.birthCount.setText("+" + TimeUnit.MILLISECONDS.toDays(calendar_start.getTimeInMillis()-birth.getTimeInMillis()));
 
         binding.startBtn.setOnClickListener(v -> {
             Log.i("ButtonChecker", "ButtonCheck StartBtn");
@@ -48,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
         binding.endBtn.setOnClickListener(v -> {
             Log.i("ButtonChecker", "ButtonCheck EndBtn");
             datePickerDialog(2);
-        });
-        binding.birthBtn.setOnClickListener(v -> {
-            Log.i("ButtonChecker", "ButtonCheck BirthBtn");
-            datePickerDialog(3);
         });
     }
     /*
@@ -66,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         int year = today.get(Calendar.YEAR);
         int month = today.get(Calendar.MONTH);
         int day = today.get(Calendar.DATE);
-
         DatePickerDialog dlg = new DatePickerDialog(this, (view, year_num, month_num, dayOfMonth) -> {
             if (btnChecker == 1) {
                 startDate = year_num + "년 " + (month_num + 1) + "월 " + dayOfMonth + "일";
@@ -79,13 +75,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("Date","startDate - " + endDate);
                 calendar_end.set(year_num, month_num + 1, dayOfMonth);
                 long finalDate = TimeUnit.MILLISECONDS.toDays(
-                        calendar_end.getTimeInMillis() - calendar_start.getTimeInMillis()
+                        (calendar_end.getTimeInMillis() - calendar_start.getTimeInMillis())+1
                 );
                 binding.finalDate.setText(String.valueOf(finalDate));
                 Toast.makeText(getApplicationContext(), "종료일은 " + endDate + " 입니다.", Toast.LENGTH_LONG).show();
-            } else {
-                calendar_birth.set(year_num, month_num + 1, dayOfMonth);
-
             }
         },year,month,day);
         dlg.show();

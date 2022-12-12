@@ -7,7 +7,7 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
@@ -29,6 +29,24 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:src="@drawable/bg" />
+        <TextView
+            android:id="@+id/birthCount_tx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:text="BirthCount: "
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="50dp"/>
+        <TextView
+            android:id="@+id/birthCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_alignBaseline="@id/birthCount_tx"
+            android:layout_toRightOf="@id/birthCount_tx"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/white"/>
 
         <TextView
             android:id="@+id/finalDate"
@@ -39,10 +57,7 @@
             android:textColor="@color/black"
             android:textSize="50sp"
             android:background="@drawable/radius"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_centerInParent="true"/>
 
         <Button
             android:id="@+id/startBtn"
@@ -52,20 +67,7 @@
             android:textColor="@color/white"
             android:background="@color/black"
             android:layout_margin="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <Button
-            android:id="@+id/birthBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="생년월일 설정"
-            android:textColor="@color/white"
-            android:background="@color/black"
-            android:layout_margin="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:layout_alignParentBottom="true"/>
 
         <Button
             android:id="@+id/endBtn"
@@ -75,9 +77,9 @@
             android:textColor="@color/white"
             android:background="@color/black"
             android:text="종료일"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"/>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>
