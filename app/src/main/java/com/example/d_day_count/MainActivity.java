@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
         birth = Calendar.getInstance();
 
         birth.set(2004,5, 5);
-        binding.birthCount.setText("+" + TimeUnit.MILLISECONDS.toDays(calendar_start.getTimeInMillis()-birth.getTimeInMillis()));
+        String birthCount = "+" + TimeUnit.MILLISECONDS.toDays(calendar_start.getTimeInMillis()-birth.getTimeInMillis());
+        binding.birthCount.setText(birthCount);
 
         binding.startBtn.setOnClickListener(v -> {
             Log.i("ButtonChecker", "ButtonCheck StartBtn");
@@ -63,20 +64,25 @@ public class MainActivity extends AppCompatActivity {
         int month = today.get(Calendar.MONTH);
         int day = today.get(Calendar.DATE);
         DatePickerDialog dlg = new DatePickerDialog(this, (view, year_num, month_num, dayOfMonth) -> {
-            if (btnChecker == true) {
+            if (btnChecker) {
                 startDate = year_num + "년 " + (month_num + 1) + "월 " + dayOfMonth + "일";
                 Toast.makeText(getApplicationContext(), "시작일은 " + startDate + " 입니다.", Toast.LENGTH_LONG).show();
 
                 calendar_start.set(year_num, month_num + 1, dayOfMonth);
                 dateChecker = true;
             } else {
-                if (dateChecker == true) {
+                if (dateChecker) {
                     endDate = year_num + "년 " + (month_num + 1) + "월 " + dayOfMonth + "일";
                     Toast.makeText(getApplicationContext(), "종료일은 " + endDate + " 입니다.", Toast.LENGTH_LONG).show();
 
                     calendar_end.set(year_num, month_num + 1, dayOfMonth);
                     long finalDate = TimeUnit.MILLISECONDS.toDays((calendar_end.getTimeInMillis() - calendar_start.getTimeInMillis()));
-                    binding.finalDate.setText(String.valueOf(finalDate));
+                    if (finalDate < 0) {
+                        long i = finalDate * -1;
+                        binding.finalDate.setText(String.valueOf(i));
+                    } else {
+                        binding.finalDate.setText(String.valueOf(finalDate));
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "시작일을 설정해주세요!", Toast.LENGTH_SHORT).show();
                 }
