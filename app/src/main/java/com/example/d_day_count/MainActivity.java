@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.example.d_day_count.databinding.Main;
 
+import org.joda.time.LocalDate;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     String startDate, endDate;
 
     Calendar calendar_start, calendar_end, birth;
+
 
     boolean dateChecker;
     boolean gregorianChecker = true;
@@ -71,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 changeCalendar();
             }
+        });
+        binding.resetBtn.setOnClickListener(v -> {
+            calendar_start = Calendar.getInstance();
+            dateChecker = false;
+            Toast("초기화 완료");
         });
     }
 
