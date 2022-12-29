@@ -3,10 +3,13 @@ package com.example.d_day_count;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.d_day_count.databinding.Main;
@@ -76,9 +79,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         binding.resetBtn.setOnClickListener(v -> {
-            calendar_start = Calendar.getInstance();
-            dateChecker = false;
-            Toast("초기화 완료");
+            new AlertDialog.Builder(getApplicationContext())
+                    .setMessage("초기화 하시겠습니까?")
+                    .setPositiveButton("확인", (dialog, which) -> {
+                        calendar_start = Calendar.getInstance();
+                        dateChecker = false;
+                        Toast("초기화 완료");
+                    })
+                    .setNegativeButton("취소", (dialog, which) -> {
+                        Toast("초기화 완료");
+                    });
         });
     }
 
@@ -133,36 +143,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void lunarDatePickerDialog(boolean lunar) {
-        GregorianCalendar today = new GregorianCalendar();
-        int year = today.get(Calendar.YEAR);
-        int month = today.get(Calendar.MONTH);
-        int day = today.get(Calendar.DATE);
-        DatePickerDialog dlg = new DatePickerDialog(this, (view, year_num, month_num, dayOfMonth) -> {
-            if (lunar) {
-                startDate = year_num + "년 " + (month_num + 1) + "월 " + dayOfMonth + "일";
-                Toast("시작일은 " + startDate + " 입니다.");
-
-                calendar_start.set(year_num, month_num + 1, dayOfMonth);
-                dateChecker = true;
-            } else {
-                if (dateChecker) {
-                    endDate = year_num + "년 " + (month_num + 1) + "월 " + dayOfMonth + "일";
-                    Toast("종료일은 " + endDate + " 입니다.");
-
-                    calendar_end.set(year_num, month_num + 1, dayOfMonth);
-                    long finalDate = TimeUnit.MILLISECONDS.toDays((calendar_end.getTimeInMillis() - calendar_start.getTimeInMillis()));
-                    if (finalDate < 0) {
-                        long i = finalDate * -1;
-                        binding.finalDate.setText(String.valueOf(i));
-                    } else {
-                        binding.finalDate.setText(String.valueOf(finalDate));
-                    }
-                } else {
-                    Toast("시작일을 설정해주세요!");
-                }
-            }
-        },year,month,day);
-        dlg.show();
+        TextView textView = new TextView(this);
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new LunarCalendarOnDateSetListener(textView), year, month, day);
+        datePickerDialog.show();
     }
 
     private void Toast(String toast) {
